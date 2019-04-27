@@ -1,10 +1,13 @@
 var express = require("express");
 var router = express.Router();
 var bodyParser = require("body-parser");
+var multer = require("multer");
+var upload = multer();
 
 router.use(bodyParser.urlencoded({ extended: false }));
 router.use(bodyParser.json());
-router.use(bodyParser.raw());
+router.use(upload.array());
+
 var firebase = require("firebase");
 var config = require("../config/keys");
 
@@ -35,6 +38,7 @@ router.get("/users", function(req, res, next) {
 });
 
 router.post("/users/new", function(req, res) {
+  console.log(req.body);
   var email = req.body.email;
   var name = req.body.name;
   var uid = req.body.uid;
