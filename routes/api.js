@@ -12,6 +12,17 @@ firebase.initializeApp(config);
 
 var database = firebase.database();
 
+function writeUserData(userId, name, email, imageUrl) {
+  firebase
+    .database()
+    .ref("users/" + userId)
+    .set({
+      username: name,
+      email: email,
+      profile_picture: imageUrl
+    });
+}
+
 router.get("/users", function(req, res, next) {
   firebase
     .database()
@@ -28,7 +39,7 @@ router.post("/users/new", function(req, res) {
   var name = req.body.name;
   var uid = req.body.uid;
   var photo = req.body.photo;
-  console.log("User name = " + user_name + ", password is " + password);
+  writeUserData(uid, name, email, photo);
   res.json({ status: "Scuccess" });
 });
 
