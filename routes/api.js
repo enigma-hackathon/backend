@@ -60,7 +60,7 @@ router.post("/users/new", function(req, res) {
 router.post("/match", function(req, res) {
   var loklys = [];
   var interests = req.body.interests;
-  console.log("Nourcs Interest : ", interests);
+  console.log("Nourcs Interest : ", req.body);
   // var interests = ["Food", "Adventure"];
 
   firebase
