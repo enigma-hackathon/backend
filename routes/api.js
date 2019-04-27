@@ -59,7 +59,7 @@ router.post("/users/new", function(req, res) {
 
 router.post("/match", function(req, res) {
   var loklys = [];
-  var interests = req.body.iterests;
+  var interests = req.body.interests;
   firebase
     .database()
     .ref("/loklys/")
