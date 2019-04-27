@@ -4,7 +4,7 @@ var bodyParser = require("body-parser");
 
 router.use(bodyParser.urlencoded({ extended: false }));
 router.use(bodyParser.json());
-
+router.use(bodyParser.raw());
 var firebase = require("firebase");
 var config = require("../config/keys");
 
