@@ -3,6 +3,8 @@ var router = express.Router();
 var bodyParser = require("body-parser");
 var multer = require("multer");
 var upload = multer();
+var cors = require("cors");
+router.use(cors());
 
 router.use(bodyParser.urlencoded({ extended: false }));
 router.use(bodyParser.json());
@@ -20,11 +22,20 @@ function writeUserData(userId, name, email, imageUrl) {
     .database()
     .ref("users/" + userId)
     .set({
-      username: name,
+      name: name,
       email: email,
-      profile_picture: imageUrl
+      picture: imageUrl
     });
 }
+
+// function updateUserData(userId, interests) {
+//   firebase
+//     .database()
+//     .ref("users/" + userId)
+//     .update({
+//       interests: interests
+//     });
+// }
 
 router.get("/users", function(req, res, next) {
   firebase
@@ -38,13 +49,42 @@ router.get("/users", function(req, res, next) {
 });
 
 router.post("/users/new", function(req, res) {
-  console.log(req.body);
   var email = req.body.email;
   var name = req.body.name;
   var uid = req.body.uid;
   var photo = req.body.photo;
   writeUserData(uid, name, email, photo);
   res.json({ status: "Scuccess" });
+});
+
+router.post("/match", function(req, res) {
+  var loklys = [];
+  var interests = req.body.iterests;
+  firebase
+    .database()
+    .ref("/loklys/")
+    .once("value")
+    .then(function(snapshot) {
+      loklys = Object.entries(snapshot.val());
+      loklys.forEach(lokly => {
+        let arr = lokly[1].interests.sort();
+        let verif = true;
+        if (interests.length <= arr.length) {
+          for (let i = 0; i < interests.length; i++) {
+            if (arr.includes(interests[i])) {
+              verif = true;
+            } else {
+              verif = false;
+              break;
+            }
+          }
+          if (verif) {
+            res.json({ status: true, lokly });
+          }
+        }
+      });
+      res.json({ status: false });
+    });
 });
 
 module.exports = router;
