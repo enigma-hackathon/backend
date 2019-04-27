@@ -83,7 +83,6 @@ router.post("/match", function(req, res) {
           }
           if (verif) {
             res.json({ status: true, lokly });
-            break;
           }
         }
       });
