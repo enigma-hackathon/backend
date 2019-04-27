@@ -70,7 +70,7 @@ router.post("/match", function(req, res) {
     .then(function(snapshot) {
       loklys = Object.entries(snapshot.val());
       loklys.forEach(lokly => {
-        let arr = lokly[1].interests.sort();
+        let arr = lokly[1].interests;
         let verif = true;
         if (interests.length <= arr.length) {
           for (let i = 0; i < interests.length; i++) {
@@ -83,6 +83,7 @@ router.post("/match", function(req, res) {
           }
           if (verif) {
             res.json({ status: true, lokly });
+            break;
           }
         }
       });
